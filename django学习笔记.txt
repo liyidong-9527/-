@@ -1,0 +1,127 @@
+js选择图片并显示
+	input type = file value="" id=files
+	img src=""
+	$("#files").change(function(){
+		$("img").attr（“src”, URL.createObjectURL($(this)[0].files[0]）
+	
+	
+	})
+django 建立事务环境的两种方式
+	1、引入transaction使用装饰器建立事务环境
+	2、在settings配置中建立事务环境，ATOMIC_REQUESTS:True
+	
+
+redis数据库启动方式：net start redis
+		redis-server :关闭命令行提示窗口，redis就会停止
+连接redis数据库
+	redis-cli
+	
+Django关系模型只公开(和文档)OneToOnefield，，，ForeignKey和ManyToManyfield，它对应于内部
+
+OneToOnefield->OneToOneRel
+ForeignKey->ManyToOneRel
+ManyToManyfield->ManyToManyRel
+
+HttpResponse支持流格式图片，可通过HttpResponse将数据库中的流文件传递到img标签src中显示图片
+
+创建ModelForm表单：
+1、应用下新建form.py
+from django.forms.models import ModelFrom
+2、创建类
+class UserForm(models.ModelForm):
+    # 和模型进行绑定
+    class Meta:
+        model = User
+        绑定字段两种方式：
+        fields = ["username", "password"]
+        # fields = "__all__"
+
+modelFrom表单作用：
+	
+	1、读取前台数据 u = UserFrom（request.POST,request.FILES）分别为读取数据与文件
+	2、做表单验证 if u.is_valid()
+				获取数据模型：user = u.instance
+				数据库插入数据 user.ave（）
+时间格式化：元组变为字符串：时间元组.strftime（格式化格式）
+
+Django序列化QuerySet对象：
+from django.core.serializers import serializers
+
+serializers("序列化格式", 序列化对象)
+
+from rest_framework import serializers
+定义序列化类
+
+在视图函数中可使用序列化类序列化QuerySet，serializers= UserSerializer(模型对象， many=True)；模型对象为多个时需要加上many = True
+得到序列化后的数据： serializers.data
+序列化数据中的数据由序列化类决定
+	
+开发项目上传到linux：
+	1、DEBUG修改为False
+	2、ALLOWED_HOSTS 配置为服务器地址
+	3、数据库连接地址设置为真实地址，且在linux系统中可以ping通
+	app下放项目
+	
+	进入文件传递页面 alt+p
+	上传到服务器 put -r（文件） 文件地址
+配置虚拟环境：
+	下载virtualenv：pip install virtualenv
+	在当前目录创建虚拟环境 vietualenv venv（虚拟环境名）
+	激活虚拟环境：source venv/bin/activate
+	退出虚拟环境：deactivate
+pip3 install mysqlclient报错
+	安装libmysqld-dev：sudo apt install libmysqld-dev
+
+uwsgi配置：
+	修改settings
+	下载安装uwsgi
+	pip install uwsgi
+	sudo apt install uwsgi-core
+	sudo apt install uwsgi-plugin-python
+	
+	编写uwsgi.ini	
+	[uwsgi]
+	chdir=/home/huokundian/app/py1905   # 项目位置
+	module=py1905.wsgi:application	       
+	master=true
+	pidfile=py1905.pid
+	processes=1                                 # 工作进程数
+	max-requests=5000
+	daemonize=py1905.log
+	vacuum=true                               # clear environment on exit
+	env=DJANGO_SETTINGS_MODULE=py1905.settings        # settings  conf 
+	
+	venv = /home/huokundian/app/py1905/venv   # 改配置必须在linux上添加虚拟配置环境、参考linux安装虚拟环境，二选一
+	pythonpath=/home/huokundian/app/py1905/venv/Lib/site-packages         # 配置虚拟镜像，不需要使用虚拟环境、替换 venv或 virtualenv 
+	socket=192.168.232.133:8888        # uwsgi服务器的ip地址和端口 can also be a file    example:  /tmp/uwsgi.socket  
+	将uwsgi.ini上传到项目目录下
+	
+	启动uwsgi uwsgi --ini uwsgi.ini
+	停止uwsgi --stop love_down.pid
+	重启uwsgi --reload love_down.pid
+	查看进程 ps -aux|grep uwsgi
+	
+Permission denied 没有权限
+linux报错：
+	E: Could not get lock /var/lib/dpkg/lock - open (11: Resource temporarily unavailable)
+	E: Unable to lock the administration directory (/var/lib/dpkg/), is another process using it?
+可能另一个程序正在运行，导致资源被锁不可用。
+解决办法：
+	sudo rm /var/lib/dpkg/lock
+	sudo dpkg --configure -a
+	
+正向代理：用代理服务器访问国外网站，自己的ip不可见
+
+反向代理：将服务器真实ip隐藏，用代理服务器访问服务器，服务器ip不可见
+
+/usr/lib/nginx
+/usr/sbin/nginx nginx服务启动/停止目录
+/usr/share/nginx
+/usr/share/doc/nginx
+/etc/init.d/nginx
+/etc/default/nginx 
+/etc/nginx  nginx配置文件目录
+/etc/logrotate.d/nginx
+/etc/ufw/applications.d/nginx
+/var/lib/nginx  
+/var/log/nginx  启动日志
